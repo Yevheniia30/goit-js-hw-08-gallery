@@ -27,3 +27,17 @@ galleryList.append(
     .join("")
 );
 console.log(galleryList);
+
+// const onGalleryClick = (event) => {
+//   event.preventDefault();
+//   console.log(event.target);
+
+//   if (event.target.nodeName !== "IMG") {
+//     return;
+//   }
+
+//   const imageRef = event.target;
+//   console.log(imageRef.dataset);
+//   const largeImageUrl = event.target.dataset.source;
+
+// galleryList.addEventListener("click", onGalleryClick);
