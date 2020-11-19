@@ -1,7 +1,10 @@
 import galleryItems from "./gallery-items.js";
-console.log(galleryItems);
+// console.log(galleryItems);
 
+//создаем разметку и рендер  галереи по массиву и шаблону
 const galleryList = document.querySelector(".js-gallery");
+const modalImage = document.querySelector(".lightbox__image");
+console.log(modalImage);
 
 galleryList.append(
   galleryItems
@@ -28,16 +31,26 @@ galleryList.append(
 );
 console.log(galleryList);
 
-// const onGalleryClick = (event) => {
-//   event.preventDefault();
-//   console.log(event.target);
-
-//   if (event.target.nodeName !== "IMG") {
-//     return;
-//   }
-
-//   const imageRef = event.target;
-//   console.log(imageRef.dataset);
-//   const largeImageUrl = event.target.dataset.source;
-
-// galleryList.addEventListener("click", onGalleryClick);
+// реализуем делегирование на галерее
+const onGalleryClick = (event) => {
+  event.preventDefault();
+  // console.log(event.target);
+  if (event.target.nodeName !== "IMG") {
+    return;
+  }
+  // if (event.target === event.currentTarget) {
+  //   return;
+  // }
+  const imageRef = event.target;
+  // console.log(imageRef.dataset);
+  const largeImageUrl = imageRef.dataset.source;
+  // console.log(largeImageUrl);
+  setModalImageSrc(largeImageUrl);
+};
+// вешаем слушатель на галерею
+galleryList.addEventListener("click", onGalleryClick);
+// присваиваем src модальной картинке (атрибут source картинки, на которую происходит клик)
+const setModalImageSrc = (url) => {
+  modalImage.src = url;
+  console.log(modalImage);
+};
