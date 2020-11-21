@@ -4,7 +4,9 @@ import galleryItems from "./gallery-items.js";
 //создаем разметку и рендер  галереи по массиву и шаблону
 const galleryList = document.querySelector(".js-gallery");
 const modalImage = document.querySelector(".lightbox__image");
-console.log(modalImage);
+const modalWindow = document.querySelector(".lightbox");
+const closeModalBtn = document.querySelector(".lightbox__button");
+const overlayRef = document.querySelector(".lightbox__overlay");
 
 galleryList.append(
   galleryItems
@@ -14,7 +16,6 @@ galleryList.append(
       const imageItem = document.createElement("img");
 
       linkItem.setAttribute("href", image.original);
-
       imageItem.setAttribute("src", image.preview);
       imageItem.setAttribute("alt", image.description);
       imageItem.setAttribute("data-source", image.original);
@@ -34,20 +35,26 @@ console.log(galleryList);
 // реализуем делегирование на галерее
 const onGalleryClick = (event) => {
   event.preventDefault();
-  // console.log(event.target);
+
+  // устанавливаем невозможность клика на любые элементы кроме картинок
   if (event.target.nodeName !== "IMG") {
     return;
   }
   // if (event.target === event.currentTarget) {
   //   return;
   // }
+
+  // узнаем url модальной картинки
   const imageRef = event.target;
-  // console.log(imageRef);
   const largeImageUrl = imageRef.dataset.source;
   const largeImageAlt = imageRef.alt;
-  // console.log(largeImageUrl);
+
   setModalImageSrc(largeImageUrl, largeImageAlt);
+
+  // открытие модалки
+  modalWindow.classList.add("is-open");
 };
+
 // вешаем слушатель на галерею
 galleryList.addEventListener("click", onGalleryClick);
 // присваиваем src и alt модальной картинке (атрибуты source и alt картинки, на которую происходит клик)
@@ -57,19 +64,25 @@ const setModalImageSrc = (url, alt) => {
   console.log(modalImage);
 };
 
-// открытие модалки
-// const galleryImage = document.querySelectorAll(".gallery__image");
-const modalWindow = document.querySelector(".lightbox");
-
-galleryList.addEventListener("click", () => {
-  modalWindow.classList.add("is-open");
-});
-
-//  закрытие модалки кнопкой close
-const closeModalBtn = document.querySelector(".lightbox__button");
-
-closeModalBtn.addEventListener("click", () => {
+// закрытие модалки
+const closeModalHandler = (event) => {
   modalWindow.classList.remove("is-open");
+  // очистка атрибутов модальной картинки при закрытии модалки
   modalImage.src = "";
   modalImage.alt = "";
+};
+// закрытие  кнопкой close
+closeModalBtn.addEventListener("click", closeModalHandler);
+
+// закрытие  кликом по оверлею
+overlayRef.addEventListener("click", (event) => {
+  if (event.target === event.currentTarget) {
+    closeModalHandler();
+  }
+});
+
+window.addEventListener("keydown", (event) => {
+  if (event.code === "Escape") {
+    closeModalHandler();
+  }
 });
