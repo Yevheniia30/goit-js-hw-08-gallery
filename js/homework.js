@@ -42,15 +42,34 @@ const onGalleryClick = (event) => {
   //   return;
   // }
   const imageRef = event.target;
-  // console.log(imageRef.dataset);
+  // console.log(imageRef);
   const largeImageUrl = imageRef.dataset.source;
+  const largeImageAlt = imageRef.alt;
   // console.log(largeImageUrl);
-  setModalImageSrc(largeImageUrl);
+  setModalImageSrc(largeImageUrl, largeImageAlt);
 };
 // вешаем слушатель на галерею
 galleryList.addEventListener("click", onGalleryClick);
-// присваиваем src модальной картинке (атрибут source картинки, на которую происходит клик)
-const setModalImageSrc = (url) => {
+// присваиваем src и alt модальной картинке (атрибуты source и alt картинки, на которую происходит клик)
+const setModalImageSrc = (url, alt) => {
   modalImage.src = url;
+  modalImage.alt = alt;
   console.log(modalImage);
 };
+
+// открытие модалки
+// const galleryImage = document.querySelectorAll(".gallery__image");
+const modalWindow = document.querySelector(".lightbox");
+
+galleryList.addEventListener("click", () => {
+  modalWindow.classList.add("is-open");
+});
+
+//  закрытие модалки кнопкой close
+const closeModalBtn = document.querySelector(".lightbox__button");
+
+closeModalBtn.addEventListener("click", () => {
+  modalWindow.classList.remove("is-open");
+  modalImage.src = "";
+  modalImage.alt = "";
+});
