@@ -33,7 +33,7 @@ galleryList.append(
 console.log(galleryList);
 
 // реализуем делегирование на галерее
-const onGalleryClick = (event) => {
+const openModalHandler = (event) => {
   event.preventDefault();
 
   // устанавливаем невозможность клика на любые элементы кроме картинок
@@ -53,24 +53,38 @@ const onGalleryClick = (event) => {
 
   // открытие модалки
   modalWindow.classList.add("is-open");
+
+  // слушатель на виндоу для реализации закрітия модалки кнопкой esc
+  window.addEventListener("keydown", closeByEscModalHandler);
 };
 
 // вешаем слушатель на галерею
-galleryList.addEventListener("click", onGalleryClick);
+galleryList.addEventListener("click", openModalHandler);
 // присваиваем src и alt модальной картинке (атрибуты source и alt картинки, на которую происходит клик)
 const setModalImageSrc = (url, alt) => {
   modalImage.src = url;
   modalImage.alt = alt;
-  console.log(modalImage);
+  // console.log(modalImage);
 };
 
 // закрытие модалки
 const closeModalHandler = (event) => {
+  // снимаем слушателя с виндоу
+  window.removeEventListener("keydown", closeByEscModalHandler);
   modalWindow.classList.remove("is-open");
   // очистка атрибутов модальной картинки при закрытии модалки
   modalImage.src = "";
   modalImage.alt = "";
 };
+
+//  закрытие нажатием esc
+const closeByEscModalHandler = (event) => {
+  if (event.code === "Escape") {
+    closeModalHandler();
+    console.log(close);
+  }
+};
+
 // закрытие  кнопкой close
 closeModalBtn.addEventListener("click", closeModalHandler);
 
@@ -81,8 +95,10 @@ overlayRef.addEventListener("click", (event) => {
   }
 });
 
-window.addEventListener("keydown", (event) => {
-  if (event.code === "Escape") {
-    closeModalHandler();
-  }
-});
+// закрытие нажатием esc
+// window.addEventListener("keydown", (event) => {
+//   if (event.code === "Escape") {
+//     closeModalHandler();
+//     console.log(close);
+//   }
+// });
