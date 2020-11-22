@@ -10,7 +10,7 @@ const overlayRef = document.querySelector(".lightbox__overlay");
 
 galleryList.append(
   galleryItems
-    .map((image) => {
+    .map((image, index) => {
       const galleryItem = document.createElement("li");
       const linkItem = document.createElement("a");
       const imageItem = document.createElement("img");
@@ -27,6 +27,7 @@ galleryList.append(
       galleryItem.classList.add("gallery__item");
       linkItem.classList.add("gallery__link");
       imageItem.classList.add("gallery__image");
+      imageItem.dataset.index = index;
     })
     .join("")
 );
@@ -48,8 +49,9 @@ const openModalHandler = (event) => {
   const imageRef = event.target;
   const largeImageUrl = imageRef.dataset.source;
   const largeImageAlt = imageRef.alt;
+  const largeImageIndex = imageRef.dataset.index;
 
-  setModalImageSrc(largeImageUrl, largeImageAlt);
+  setModalImageSrc(largeImageUrl, largeImageAlt, largeImageIndex);
 
   // открытие модалки
   modalWindow.classList.add("is-open");
@@ -61,9 +63,11 @@ const openModalHandler = (event) => {
 // вешаем слушатель на галерею
 galleryList.addEventListener("click", openModalHandler);
 // присваиваем src и alt модальной картинке (атрибуты source и alt картинки, на которую происходит клик)
-const setModalImageSrc = (url, alt) => {
+const setModalImageSrc = (url, alt, index) => {
   modalImage.src = url;
   modalImage.alt = alt;
+  modalImage.dataset.index = index;
+
   // console.log(modalImage);
 };
 
@@ -95,6 +99,13 @@ overlayRef.addEventListener("click", (event) => {
   }
 });
 
+// пролистывание
+
+// if (event.target==='')
+
+// right
+
+// left
 // закрытие нажатием esc
 // window.addEventListener("keydown", (event) => {
 //   if (event.code === "Escape") {
