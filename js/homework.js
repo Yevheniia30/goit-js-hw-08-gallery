@@ -77,7 +77,7 @@ const setModalImageSrc = (url, alt, index) => {
 const closeModalHandler = (event) => {
   // снимаем слушатели с виндоу
   window.removeEventListener("keydown", closeByEscModalHandler);
-  window.removeEventListener("keydown", nextImageHandler);
+  // window.removeEventListener("keydown", nextImageHandler);
   modalWindow.classList.remove("is-open");
   // очистка атрибутов модальной картинки при закрытии модалки
   modalImage.src = "";
