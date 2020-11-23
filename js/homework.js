@@ -8,6 +8,7 @@ const modalWindow = document.querySelector(".lightbox");
 const closeModalBtn = document.querySelector(".lightbox__button");
 const overlayRef = document.querySelector(".lightbox__overlay");
 const galleryimage = document.querySelectorAll(".gallery__image");
+let currentIndex;
 
 galleryList.append(
   galleryItems
@@ -74,8 +75,9 @@ const setModalImageSrc = (url, alt, index) => {
 
 // закрытие модалки
 const closeModalHandler = (event) => {
-  // снимаем слушателя с виндоу
+  // снимаем слушатели с виндоу
   window.removeEventListener("keydown", closeByEscModalHandler);
+  window.removeEventListener("keydown", nextImageHandler);
   modalWindow.classList.remove("is-open");
   // очистка атрибутов модальной картинки при закрытии модалки
   modalImage.src = "";
@@ -99,41 +101,27 @@ overlayRef.addEventListener("click", (event) => {
   }
 });
 
-// пролистывание
-
+// пролистывание галереи
 const nextImageHandler = (event) => {
-  let currentIndex = Number(event.target.firstChild.dataset.index);
-  console.log(currentIndex);
+  // let currentIndex = Number(event.target.firstChild.dataset.index);
+  // console.log(currentIndex);
+  if (currentIndex === undefined) {
+    currentIndex = Number(event.target.firstChild.dataset.index);
+    // console.log(event.target);
+  }
   if (event.code === "ArrowRight") {
     currentIndex += 1;
     if (currentIndex > galleryItems.length - 1) {
       currentIndex = 0;
     }
-    // modalImage.src = `${galleryimage[`${currentIndex + 1}`].dataset.source}`;
   } else if (event.code === "ArrowLeft") {
     currentIndex -= 1;
     if (currentIndex < 0) {
       currentIndex = galleryItems.length - 1;
     }
-    // modalImage.src = `${galleryimage[`${currentIndex - 1}`].dataset.source}`;
-    // modalImage.src = galleryItems[`${currentIndex - 1}`].original;
   }
 
-  modalImage.src = galleryItems[currentIndex].original; //ПЕРЕКЛЮЧАЕТСЯ ТОЛЬКО НА СОСЕДНИЕ КАРТИНКИ
-  // modalImage.dataset.index = galleryItems[`${currentIndex}`].dataset.index; //ПЕРЕКЛЮЧАЕТСЯ ТОЛЬКО НА СОСЕДНИЕ КАРТИНКИ
-  // modalImage.alt = galleryItems[`${currentIndex}`].alt; //ПЕРЕКЛЮЧАЕТСЯ ТОЛЬКО НА СОСЕДНИЕ КАРТИНКИ
-  // modalImage.src = `${galleryimage[`${currentIndex}`].dataset.source}`;
-  // modalImage(
-  //   document.querySelector(`img[data-index="${currentIndex}"]`).dataset.source
-  // );
-  // modalImage.src = galleryimage[`${currentIndex}`].dataset.source;
+  modalImage.src = galleryItems[currentIndex].original;
 };
 
 window.addEventListener("keydown", nextImageHandler);
-// закрытие нажатием esc
-// window.addEventListener("keydown", (event) => {
-//   if (event.code === "Escape") {
-//     closeModalHandler();
-//     console.log(close);
-//   }
-// });
